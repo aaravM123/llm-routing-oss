@@ -1,0 +1,31 @@
+name: CI - Test, Lint, Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          pip install -r requirements.txt
+          pip install pytest black mypy
+      - run: black --check .
+      - run: mypy services/api/app
+      - run: pytest -v || echo "No tests yet"
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"

@@ -1,0 +1,61 @@
+# agent/config.yaml
+
+# Default router mode if none is passed
+mode: balanced   # fast | accurate | balanced
+
+# Unified model catalog (edit freely)
+models:
+  openai_gpt4o:
+    provider: openai
+    id: gpt-4o
+    price_in: 0.005      # $ per 1K input tokens
+    price_out: 0.015     # $ per 1K output tokens
+    avg_latency_ms: 1500
+
+  openai_gpt4o_mini:
+    provider: openai
+    id: gpt-4o-mini
+    price_in: 0.0005
+    price_out: 0.0015
+    avg_latency_ms: 800
+
+  anthropic_claude_sonnet:
+    provider: anthropic
+    id: claude-3-sonnet
+    price_in: 0.003      # adjust later if needed
+    price_out: 0.015
+    avg_latency_ms: 1400
+
+  google_gemini_15_pro:
+    provider: google
+    id: gemini-1.5-pro-latest
+    price_in: 0.00125    # if you're on free tier, cost may be $0
+    price_out: 0.0025
+    avg_latency_ms: 1200
+
+  meta_llama3_70b:
+    provider: meta
+    id: llama-3-70b-instruct
+    price_in: 0.002      # via hosted providers (Together/Fireworks/etc.)
+    price_out: 0.003
+    avg_latency_ms: 1600
+
+  mistral_large:
+    provider: mistral
+    id: mistral-large-latest
+    price_in: 0.0035
+    price_out: 0.007
+    avg_latency_ms: 1400
+
+# Cache config
+cache:
+  backend: local             # local | redis
+  ttl_seconds: 86400
+  redis_url: "redis://localhost:6379/0"
+  local_pickle_path: "./logs/cache.pkl"
+
+# Logging config
+logging:
+  per_call_path: "./logs/per_call.jsonl"
+  daily_rollup_path: "./logs/daily.json"
+
