@@ -1,4 +1,18 @@
 from fastapi import FastAPI
+import sentry_sdk
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+sentry_sdk.init(
+    dsn=os.getenv(
+        "SENTRY_DSN",
+        "https://fc9682d97f2f117fac6dfe11fb43fa2c@o4510203843837952.ingest.us.sentry.io/4510203851505664",
+    ),
+    send_default_pii=True,
+    traces_sample_rate=1.0,
+)
 
 app = FastAPI(title="LLM Router OSS")
 
