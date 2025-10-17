@@ -1,5 +1,11 @@
 # agent/llm_clients/__init__.py
-from . import openai_client, anthropic_client, gemini_client, llama_client, mistral_client
+from . import (
+    openai_client,
+    anthropic_client,
+    gemini_client,
+    llama_client,
+    mistral_client,
+)
 
 REGISTRY = {
     "openai": openai_client,
@@ -9,7 +15,7 @@ REGISTRY = {
     "mistral": mistral_client,
 }
 
+
 def call(provider: str, model_cfg: dict, prompt: str, **opts):
     client = REGISTRY[provider]
     return client.call(model_cfg, prompt, **opts)
-

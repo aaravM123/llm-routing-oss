@@ -2,6 +2,7 @@ import os
 import random
 from typing import List, Dict
 
+
 # Step 3: Auto-scoring logic (API optional)
 def score_responses(prompt: str, responses: List[Dict]) -> List[Dict]:
     """
@@ -16,6 +17,7 @@ def score_responses(prompt: str, responses: List[Dict]) -> List[Dict]:
         # Real scoring using OpenAI API
         try:
             import openai
+
             openai.api_key = api_key
             import json
 
@@ -34,10 +36,13 @@ Output to score:
                     completion = openai.ChatCompletion.create(
                         model="gpt-4o-mini",  # cheap + fast for scoring
                         messages=[
-                            {"role": "system", "content": "You are a strict and concise evaluator."},
-                            {"role": "user", "content": scoring_prompt}
+                            {
+                                "role": "system",
+                                "content": "You are a strict and concise evaluator.",
+                            },
+                            {"role": "user", "content": scoring_prompt},
                         ],
-                        temperature=0
+                        temperature=0,
                     )
 
                     score_data = json.loads(completion.choices[0].message["content"])
@@ -66,17 +71,38 @@ Output to score:
     updated.sort(key=lambda x: x["score"], reverse=True)
     return updated
 
+
 # Example usage
 if __name__ == "__main__":
     test_prompt = "Explain quantum computing in one sentence."
     test_responses = [
-        {"model": "OpenAI GPT-4o", "response": "Quantum computing uses quantum bits to perform complex computations much faster than classical computers.", "latency": 389.77, "tokens_in": 6, "tokens_out": 57, "cost": 0.0001},
-        {"model": "Claude 3 Opus", "response": "Quantum computing harnesses quantum mechanics to process information in ways classical computers cannot.", "latency": 489.92, "tokens_in": 6, "tokens_out": 99, "cost": 0.0003},
-        {"model": "Gemini 1.5 Pro", "response": "Quantum computing uses qubits and quantum entanglement to process data differently than traditional computers.", "latency": 418.31, "tokens_in": 6, "tokens_out": 123, "cost": 0.0001}
+        {
+            "model": "OpenAI GPT-4o",
+            "response": "Quantum computing uses quantum bits to perform complex computations much faster than classical computers.",
+            "latency": 389.77,
+            "tokens_in": 6,
+            "tokens_out": 57,
+            "cost": 0.0001,
+        },
+        {
+            "model": "Claude 3 Opus",
+            "response": "Quantum computing harnesses quantum mechanics to process information in ways classical computers cannot.",
+            "latency": 489.92,
+            "tokens_in": 6,
+            "tokens_out": 99,
+            "cost": 0.0003,
+        },
+        {
+            "model": "Gemini 1.5 Pro",
+            "response": "Quantum computing uses qubits and quantum entanglement to process data differently than traditional computers.",
+            "latency": 418.31,
+            "tokens_in": 6,
+            "tokens_out": 123,
+            "cost": 0.0001,
+        },
     ]
 
     ranked = score_responses(test_prompt, test_responses)
     print("\nLeaderboard:")
     for r in ranked:
         print(f"{r['model']} - Score: {r['score']} - {r['reason']}")
-

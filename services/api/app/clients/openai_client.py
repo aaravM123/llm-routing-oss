@@ -1,6 +1,7 @@
 import time
 import random
 
+
 def call(model_id, prompt, **opts):
     start = time.time()
 
@@ -23,6 +24,5 @@ def call(model_id, prompt, **opts):
         "tokens_out": tokens_out,
         "cost_usd": round(cost_usd, 6),
         "latency_ms": round((time.time() - start) * 1000, 2),
-        "raw": {"status": "simulated"}
+        "raw": {"status": "simulated"},
     }
-
